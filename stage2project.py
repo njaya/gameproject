@@ -40,9 +40,9 @@ hard_answers = ["class", "method", "__init__", "instance", "__repr__", "__lt__",
 
 
 level_mapping = {
-    "easy": [easy_text, easy_fill_in_the_blanks, easy_answers],
-    "medium": [medium_text, medium_fill_in_the_blanks, medium_answers],
-    "hard": [hard_text, hard_fill_in_the_blanks, hard_answers]
+    "easy": {"para": easy_text, "blanks": easy_fill_in_the_blanks, "answers": easy_answers},
+    "medium": {"para": medium_text, "blanks": medium_fill_in_the_blanks, "answers": medium_answers},
+    "hard": {"para": hard_text, "blanks": hard_fill_in_the_blanks, "answers": hard_answers}
 }
 # Ask a user to select difficulty, easy, medium hard
 def ask_question():
@@ -89,11 +89,11 @@ def quiz_player(new_para, quiz_ans, tries, diff_lev, blanks):
         while tries > 0 and index < len(quiz_ans):
             print "The current paragraph reads as such:\n"
             print new_para
-            user_input = raw_input("What should be substituted in for  " + blanks[index] + " ? ")
+            user_input = raw_input("\nWhat should be substituted in for  " + blanks[index] + " ? ")
             if user_input.lower() != quiz_ans[index].lower():
                 tries = update_tries(tries)
             else:
-                print "Correct!\n"
+                print "\nCorrect!\n"
                 new_para = new_para.replace(blanks[index], quiz_ans[index])
                 index += 1
     if tries == 0:
@@ -107,7 +107,8 @@ def play_game():
     difficulty_level = ask_question()
     max_guesses = 5
     print "You will get 5 guesses per problem \n"
-    quiz_paragraph, quiz_fill_in_the_blanks, quiz_answers = get_level_details(difficulty_level)
+    level_details = get_level_details(difficulty_level)
+    quiz_paragraph, quiz_fill_in_the_blanks, quiz_answers = level_details['para'], level_details['blanks'], level_details['answers']
     quiz_player(quiz_paragraph, quiz_answers, max_guesses, difficulty_level, quiz_fill_in_the_blanks)
 
 
